@@ -2,23 +2,50 @@
 #by me :)
 #Sorry coause it's in spanish, hope you get what the code is about
 
-import time
 import sys
-import cmd
 
-pagina0 = ['Te despierta un rayo de luz proveniendo de la entrada a la cueva.', 'derecha', 'izquierda', 'pagina1', 'pagina2']
-pagina1 = ['moriste','Oyes un sonido extremadamente alto y sientes algo caliente en tu cuello. Pisaste una mina.']
-pagina2 = ['Encuentras la salida, pero ves un oso cerca de la entrada.', 'pelear', 'hacerte el muerto', 'pagina3', 'pagina4']
-pagina3 = ['De alguna manera consigues asustar al oso y te deja en paz.', 'irse', 'quedarte donde estás', 'pagina5', 'pagina6']
-pagina4 = ['Te tirasal suelo y aguantas la respiración. El oso te ignora y se va.', 'levantarse', 'quedarte donde estás', 'pagina5', 'pagina6']
-pagina5 = ['Ves un barco, pero hay gente cerca. Tienen armas, pero encontraste un revolver detras de un arbol', 'acercarse', 'alejarse', 'pagina7', 'pagina8']
-pagina6 = ['moriste', 'Un meteorito cae sobre tu cabeza. No te dio tiempo a asustarte.']
-pagina7 = ['ganaste','Te acercas lentamente, y un meteorito cae unos diez metros de donde estas. Te levantas en la enfermería del barco.']
-pagina8 = ['moriste','Corres hacia la distancia y mueres de deshidratacion unos días después.']
+paginas = {
+    0: {
+        'mensaje': 'Te despierta un rayo de luz proveniendo de la entrada a la cueva.',
+        'acciones': [('derecha', 1), ('izquierda', 2)],
+    },
+    1: {
+        'estado': 'moriste',
+        'mensaje': 'Oyes un sonido extremadamente alto y sientes algo caliente en tu cuello. Pisaste una mina.',
+    },
+    2: {
+        'mensaje': 'Encuentras la salida, pero ves un oso cerca de la entrada.',
+        'acciones': [('pelear', 3), ('hacerte el muerto', 4)],
+    },
+    3: {
+        'mensaje': 'De alguna manera consigues asustar al oso y te deja en paz.',
+        'acciones': [('irse', 5), ('quedarte donde estás', 6)],
+    },
+    4: {
+        'mensaje': 'Te tiras al suelo y aguantas la respiración. El oso te ignora y se va.',
+        'acciones': [('levantarse', 5), ('quedarte donde estás', 6)],
+    },
+    5: {
+        'mensaje': 'Ves un barco, pero hay gente cerca. Tienen armas, pero encontraste un revolver detras de un arbol',
+        'acciones': [('acercarse', 7), ('alejarse', 8)],
+    },
+    6: {
+        'estado': 'moriste',
+        'mensaje': 'moriste', 'Un meteorito cae sobre tu cabeza. No te dio tiempo a asustarte.',
+    },
+    7: {
+        'estado': 'ganaste',
+        'mensaje': 'Te acercas lentamente, y un meteorito cae unos diez metros de donde estas. Te levantas en la enfermería del barco.',
+    },
+    8: {
+        'estado': 'moriste',
+        'mensaje': 'moriste','Corres hacia la distancia y mueres de deshidratacion unos días después.',
+    },
+}
 
 
 def salir():
-        salir = None
+    salir = None
     while salir is None:
         salir = input('salir (sí o no)?').lower()
         if salir not in ["sí", "no"]:
