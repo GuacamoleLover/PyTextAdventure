@@ -31,7 +31,7 @@ paginas = {
     },
     6: {
         'estado': 'moriste',
-        'mensaje': 'moriste', 'Un meteorito cae sobre tu cabeza. No te dio tiempo a asustarte.',
+        'mensaje': 'Un meteorito cae sobre tu cabeza. No te dio tiempo a asustarte.',
     },
     7: {
         'estado': 'ganaste',
@@ -39,7 +39,7 @@ paginas = {
     },
     8: {
         'estado': 'moriste',
-        'mensaje': 'moriste','Corres hacia la distancia y mueres de deshidratacion unos días después.',
+        'mensaje': 'Corres hacia la distancia y mueres de deshidratacion unos días después.',
     },
 }
 
@@ -47,7 +47,7 @@ paginas = {
 def salir():
     salir = None
     while salir is None:
-        salir = input('salir (sí o no)?').lower()
+        salir = input('salir (sí o no)? ').lower()
         if salir not in ["sí", "no"]:
             print("Escribe un comando correcto.")
             salir = None
@@ -55,43 +55,36 @@ def salir():
             sys.exit()
     return salir
 
+
+pagina = paginas[0]  # initial state
 respuesta = None
-
 while respuesta is None:
-    respuesta = input(f'salir ({paginaActual[1]} o {paginaActual[2]})?').lower()
-    if respuesta != paginaActual[1] and respuesta != paginaActual[2]:
-        print("Escribe un comando correcto.")
-        respuesta = None
-    if respuesta == paginaActual[1]:
-        paginaActual = paginaActual[3]
-    elif respuesta == paginaActual[2]:
-        paginaActual = paginaActual[4]
-    elif paginaActual[0] == ('moriste'):
-        print('Fin...')
-        print('====================')
-        print('')
-        print('Tristemente no encontraste un final feliz...')
-        print('Pero prueba de nuevo!')
-        print('salir = "s"')
-        salir()
-    elif paginaActual[0] == ('ganaste'):
-        print('Fin!')
-        print('====================')
-        print('')
-        print('Escapaste! Finalmente podrás reunirte con tu familia...')
-        print('O lo que queda de ella... Parece ser que viajaste en el tiempo hacia el futuro')
-        print('y tu único relativo vivo es tu nieta Antonieta. Mejor que nada!')
-        salir()
-
-
-
-
-
-
-
-
-
-
-
-
+    estado = pagina.get('estado', '')  # set empty string as default
+    if estado:  # if we have a state (won/lost, deal with it first)
+        print(pagina['mensaje'])
+        if estado == "moriste":
+            print('Fin...')
+            print('====================', end="\n\n")
+            print('Tristemente no encontraste un final feliz...')
+            print('Pero prueba de nuevo!')
+        elif estado == "ganaste":
+            print('Fin!')
+            print('====================', end="\n\n")
+            print('Escapaste! Finalmente podrás reunirte con tu familia...')
+            print('O lo que queda de ella... Parece ser que viajaste en el tiempo hacia el futuro')
+            print('y tu único relativo vivo es tu nieta Antonieta. Mejor que nada!')
+        respuesta = salir()
+        if respuesta == 'no':
+            respuesta = None
+            pagina = paginas[0]
+    else:
+        lista_acciones = list(map(lambda x: x[0], pagina['acciones']))
+        respuesta = input(f"{pagina['mensaje']} [{', '.join(lista_acciones)}]: ")
+        if respuesta not in lista_acciones:
+            print("Escribe un comando correcto.")
+            respuesta = None
+        else:
+            accion = lista_acciones.index(respuesta)
+            pagina = paginas[pagina['acciones'][accion][1]]
+            respuesta = None
 
